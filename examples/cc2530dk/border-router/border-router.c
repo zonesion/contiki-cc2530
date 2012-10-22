@@ -105,15 +105,15 @@ PROCESS_THREAD(border_router_process, ev, data)
   PRINTF("Border Router started\n");
   prefix_set = 0;
 
-  leds_on(LEDS_RED);
+  //leds_on(LEDS_RED);
 
   /* Request prefix until it has been received */
   while(!prefix_set) {
-    leds_on(LEDS_GREEN);
+    leds_on(1);
     PRINTF("Prefix request.\n");
     etimer_set(&et, CLOCK_SECOND);
     request_prefix();
-    leds_off(LEDS_GREEN);
+    leds_off(1);
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
   }
   cc2530_rf_channel_get();
@@ -121,8 +121,8 @@ PROCESS_THREAD(border_router_process, ev, data)
   PRINTF("On Channel %u\n", cc2530_rf_channel_get());
 
   print_local_addresses();
-
-  leds_off(LEDS_RED);
+	leds_on(1);
+ // leds_off(LEDS_RED);
 
   PROCESS_EXIT();
 

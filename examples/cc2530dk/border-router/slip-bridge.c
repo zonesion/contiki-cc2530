@@ -43,11 +43,13 @@
 #include "net/uip-ds6.h"
 #include "net/rpl/rpl.h"
 #include "dev/slip.h"
+#include "dev/leds.h"
+
 #include <string.h>
 
 #define UIP_IP_BUF        ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 
-#define DEBUG DEBUG_NONE
+#define DEBUG   DEBUG_NONE
 #include "net/uip-debug.h"
 
 void set_prefix_64(uip_ipaddr_t *);
@@ -57,6 +59,7 @@ static uip_ipaddr_t last_sender;
 static void
 slip_input_callback(void)
 {
+	leds_on(2);
   PRINTF("SIN: %u\n", uip_len);
   if((char) uip_buf[0] == '!') {
     PRINTF("Got configuration message of type %c\n", uip_buf[1]);
@@ -75,6 +78,7 @@ slip_input_callback(void)
   /* Save the last sender received over SLIP to avoid bouncing the
      packet back if no route is found */
   uip_ipaddr_copy(&last_sender, &UIP_IP_BUF->srcipaddr);
+	leds_off(2);
 }
 #include "debug.h"
 
@@ -89,6 +93,7 @@ init(void)
 static void
 output(void)
 {
+	leds_on(2);
   if(uip_ipaddr_cmp(&last_sender, &UIP_IP_BUF->srcipaddr)) {
     /* Do not bounce packets back over SLIP if the packet was received
        over SLIP */
@@ -97,6 +102,7 @@ output(void)
     PRINTF("SUT: %u\n", uip_len);
     slip_send();
   }
+	leds_off(2);
 }
 /*---------------------------------------------------------------------------*/
 struct uip_fallback_interface slip_interface = {

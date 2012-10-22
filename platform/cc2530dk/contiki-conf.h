@@ -181,7 +181,7 @@
 #define UIP_CONF_NETIF_MAX_ADDRESSES         3
 
 /* TCP, UDP, ICMP */
-#define UIP_CONF_TCP                         0
+#define UIP_CONF_TCP                         1 
 #define UIP_CONF_UDP                         1
 #define UIP_CONF_UDP_CHECKSUMS               1
 
@@ -214,10 +214,11 @@
 #endif
 
 /* uIP */
-#define UIP_CONF_BUFFER_SIZE               240
+#define UIP_CONF_BUFFER_SIZE            130 //   240
 #define UIP_CONF_IPV6_QUEUE_PKT              0
 #define UIP_CONF_IPV6_CHECKS                 1
 #define UIP_CONF_IPV6_REASSEMBLY             0
+#define UIP_CONF_RECEIVE_WINDOW	         60	
 
 /* 6lowpan */
 #define SICSLOWPAN_CONF_COMPRESSION          SICSLOWPAN_COMPRESSION_HC06

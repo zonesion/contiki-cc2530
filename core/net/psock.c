@@ -185,13 +185,14 @@ PT_THREAD(psock_send(CC_REGISTER_ARG struct psock *s, const uint8_t *buf,
 
   /* We loop here until all data is sent. The s->sendlen variable is
      updated by the data_sent() function. */
-  while(s->sendlen > 0) {
+  while(/*s->sendlen > 0*/ len > 0) {
 
     /*
      * The protothread will wait here until all data has been
      * acknowledged and sent (data_is_acked_and_send() returns 1).
      */
     PT_WAIT_UNTIL(&s->psockpt, data_is_sent_and_acked(s));
+    len = s->sendlen;
   }
 
   s->state = STATE_NONE;

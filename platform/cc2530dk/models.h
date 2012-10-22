@@ -83,12 +83,12 @@
 
 /* H/W Connections */
 #define LED1_PIN   P1_0
-#define LED2_PIN   P1_1
+#define LED2_PIN   P1_2
 #define LED3_PIN   P1_4
 
 /* P0DIR and P0SEL masks */
 #define LED1_MASK  0x01
-#define LED2_MASK  0x02
+#define LED2_MASK  0x04
 #define LED3_MASK  0x10
 #define LED4_MASK  0x02
 #endif
