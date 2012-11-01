@@ -66,7 +66,7 @@
  *
  */
 #define BUF_FOUND 2
-
+extern lirend(char *fmt, ...);
 /*---------------------------------------------------------------------------*/
 static void
 buf_setup(struct psock_buf *buf,
@@ -124,17 +124,19 @@ buf_bufto(CC_REGISTER_ARG struct psock_buf *buf, uint8_t endmarker,
   if(*datalen == 0) {
     return BUF_NOT_FOUND;
   }
-
-  while(*datalen > 0) {
+ 
+{
+	uint16_t x = *datalen;
+  while(/**datalen > 0*/x>0) {
     c = **dataptr;
     --*datalen;
     ++*dataptr;
-    
+   --x; 
     if(c == endmarker) {
       return BUF_FOUND | BUF_FULL;
     }
   }
-  
+ } 
   return BUF_FULL;
 }
 /*---------------------------------------------------------------------------*/
@@ -185,13 +187,14 @@ PT_THREAD(psock_send(CC_REGISTER_ARG struct psock *s, const uint8_t *buf,
 
   /* We loop here until all data is sent. The s->sendlen variable is
      updated by the data_sent() function. */
-  while(s->sendlen > 0) {
+  while(/*s->sendlen > 0*/len > 0) {
 
     /*
      * The protothread will wait here until all data has been
      * acknowledged and sent (data_is_acked_and_send() returns 1).
      */
     PT_WAIT_UNTIL(&s->psockpt, data_is_sent_and_acked(s));
+	len = s->sendlen;
   }
 
   s->state = STATE_NONE;
@@ -202,6 +205,7 @@ PT_THREAD(psock_send(CC_REGISTER_ARG struct psock *s, const uint8_t *buf,
 PT_THREAD(psock_generator_send(CC_REGISTER_ARG struct psock *s,
 			       unsigned short (*generate)(void *), void *arg))
 {
+//	lirend("psock_generator_send()\n");
   PT_BEGIN(&s->psockpt);
 
   /* Ensure that there is a generator function to call. */
@@ -225,7 +229,9 @@ PT_THREAD(psock_generator_send(CC_REGISTER_ARG struct psock *s,
 
     /* Wait until all data is sent and acknowledged. */
  // if (!s->sendlen) break;   //useful debugging aid
+//	lirend("wait ack\n");
     PT_YIELD_UNTIL(&s->psockpt, uip_acked() || uip_rexmit());
+	//lirend("wait return \n");
   } while(!uip_acked());
   
   s->state = STATE_NONE;

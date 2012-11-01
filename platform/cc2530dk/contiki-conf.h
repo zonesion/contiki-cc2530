@@ -221,17 +221,22 @@
 #define UIP_CONF_RECEIVE_WINDOW	         60	
 
 /* 6lowpan */
-#define SICSLOWPAN_CONF_COMPRESSION          SICSLOWPAN_COMPRESSION_HC06
+#define SICSLOWPAN_CONF_COMPRESSION        SICSLOWPAN_COMPRESSION_HC06
+#define SICSLOWPAN_CONF_FRAG                0 
 #ifndef SICSLOWPAN_CONF_FRAG
 #define SICSLOWPAN_CONF_FRAG                 0 /* About 2KB of CODE if 1 */
 #endif
 #define SICSLOWPAN_CONF_MAXAGE               8
 
 /* Define our IPv6 prefixes/contexts here */
-#define SICSLOWPAN_CONF_MAX_ADDR_CONTEXTS    1
+#define SICSLOWPAN_CONF_MAX_ADDR_CONTEXTS   2 
 #define SICSLOWPAN_CONF_ADDR_CONTEXT_0 { \
   addr_contexts[0].prefix[0] = 0xaa; \
   addr_contexts[0].prefix[1] = 0xaa; \
+}
+#define SICSLOWPAN_CONF_ADDR_CONTEXT_1 { \
+  addr_contexts[0].prefix[0] = 0xbb; \
+  addr_contexts[0].prefix[1] = 0xbb; \
 }
 
 #define MAC_CONF_CHANNEL_CHECK_RATE          8
